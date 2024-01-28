@@ -1,51 +1,64 @@
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import { List, ListItem, ListItemText, Divider, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Paper, Container, List, ListItem, Button } from '@mui/material';
+
+import { posts } from './mock_data/posts'
 
 function App() {
+  // alert(posts)
+  console.log(posts)
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Study Zone
           </Typography>
+          {/* Class Selections */}
+          <Box>
+            {['Honors Biology', 'Geometry', 'Pre-Modern History'].map((subject) => (
+              <Button key={subject} color="inherit">{subject}</Button>
+            ))}
+          </Box>
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224 }}>
-        <List component="nav" aria-label="mailbox folders">
-          <ListItem button>
-            <ListItemText primary="Photos" />
-          </ListItem>
-          <Divider />
-          <ListItem button divider>
-            <ListItemText primary="Definitions" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Explanations" />
-          </ListItem>
-          <Divider light />
-          <ListItem button>
-            <ListItemText primary="Live Chat" />
-          </ListItem>
-        </List>
+      {/* Major Categories/Channels */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+        {['Photos', 'Definitions', 'Explanations', 'Live Chat'].map((category) => (
+          <Button key={category} variant="contained" sx={{ mx: 1, py: 1.5, px: 3, fontSize: '1.2rem' }}>
+            {category}
+          </Button>
+        ))}
       </Box>
 
-      <Container maxWidth="md">
-        <Paper style={{ padding: '20px', marginTop: '20px' }} elevation={3}>
-          <Typography variant="h5">@Emily56:</Typography>
-          <Typography variant="body1">Can someone explain how photosynthesis works?</Typography>
-        </Paper>
+      <Container maxWidth="lg">
+        <Box sx={{ display: 'flex', mt: 2 }}>
+          {/* Main content area */}
+          <Box sx={{ flex: 1, pr: 2 }}>
+            <Paper sx={{ p: 2 }} elevation={3}>
+              <Typography variant="h5">@Emily56:</Typography>
+              <Typography variant="body1">Can someone explain how photosynthesis works?</Typography>
+              {/* Nested Comment */}
+              <Box sx={{ pl: 2, pt: 1 }}>
+                <Paper sx={{ p: 1.5, mt: 1, bgcolor: 'action.hover' }} elevation={1}>
+                  <Typography variant="subtitle1">John725:</Typography>
+                  <Typography variant="body2">It turns sunlight...</Typography>
+                </Paper>
+              </Box>
+            </Paper>
+          </Box>
 
-        <Paper style={{ padding: '20px', marginTop: '20px', backgroundColor: '#f0f0f0' }} elevation={1}>
-          <Typography variant="h6">John725:</Typography>
-          <Typography variant="body1">It turns sunlight...</Typography>
-        </Paper>
+          {/* Unit Selections */}
+          <Box sx={{ width: '200px' }}>
+            <List>
+              {['Unit 5', 'Unit 4', 'Unit 3', 'Unit 2', 'Unit 1'].map((unit, index) => (
+                <ListItem key={unit} button>
+                  <Button fullWidth variant={index === 0 ? "contained" : "text"}>{unit}</Button>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Box>
       </Container>
     </div>
   );
