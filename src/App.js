@@ -1,11 +1,15 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box, Paper, Container, List, ListItem, Button } from '@mui/material';
 
-import { posts } from './mock_data/posts'
-
 function App() {
-  // alert(posts)
-  console.log(posts)
+  // State to track the selected category
+  const [selectedCategory, setSelectedCategory] = React.useState('Explanations');
+
+  // Function to handle category selection
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+  };
+
   return (
     <div>
       <AppBar position="static">
@@ -16,7 +20,9 @@ function App() {
           {/* Class Selections */}
           <Box>
             {['Honors Biology', 'Geometry', 'Pre-Modern History'].map((subject) => (
-              <Button key={subject} color="inherit">{subject}</Button>
+              <Button key={subject} color="inherit">
+                {subject}
+              </Button>
             ))}
           </Box>
         </Toolbar>
@@ -25,7 +31,12 @@ function App() {
       {/* Major Categories/Channels */}
       <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
         {['Photos', 'Definitions', 'Explanations', 'Live Chat'].map((category) => (
-          <Button key={category} variant="contained" sx={{ mx: 1, py: 1.5, px: 3, fontSize: '1.2rem' }}>
+          <Button
+            key={category}
+            variant={selectedCategory === category ? "contained" : "outlined"}
+            sx={{ mx: 1, py: 1.5, px: 3, fontSize: '1.2rem' }}
+            onClick={() => handleCategorySelect(category)}
+          >
             {category}
           </Button>
         ))}
@@ -35,6 +46,7 @@ function App() {
         <Box sx={{ display: 'flex', mt: 2 }}>
           {/* Main content area */}
           <Box sx={{ flex: 1, pr: 2 }}>
+            {/* Threads and comments will be dynamic based on the selected category */}
             <Paper sx={{ p: 2 }} elevation={3}>
               <Typography variant="h5">@Emily56:</Typography>
               <Typography variant="body1">Can someone explain how photosynthesis works?</Typography>
@@ -53,7 +65,9 @@ function App() {
             <List>
               {['Unit 5', 'Unit 4', 'Unit 3', 'Unit 2', 'Unit 1'].map((unit, index) => (
                 <ListItem key={unit} button>
-                  <Button fullWidth variant={index === 0 ? "contained" : "text"}>{unit}</Button>
+                  <Button fullWidth variant={index === 0 ? "contained" : "text"}>
+                    {unit}
+                  </Button>
                 </ListItem>
               ))}
             </List>
