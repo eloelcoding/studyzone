@@ -15,6 +15,7 @@ function App() {
   const categories = get_categories();
   var currentUser = "joeliologist";
 
+  
   // Group posts and their comments together
   const postsWithComments = posts.map(post => {
     if (post.parent_id) return;
@@ -25,6 +26,7 @@ function App() {
       };
     }
   ).filter(post => post != null)
+  .filter(post => post.post_type == selectedCategory.toLowerCase())
   .reverse();
 
   console.log(postsWithComments);
@@ -42,7 +44,8 @@ function App() {
       // You can replace this with your desired logic
       // For example, trigger an API call, update state, etc.
 
-      var new_post = {'id': _id++, 'author': currentUser, 'content': event.target.value, parent_id: id};
+      var post_type = selectedCategory.toLowerCase();
+      var new_post = {'id': _id++, 'author': currentUser, 'content': event.target.value, parent_id: id, post_type };
       event.target.value = ""
       setPosts((prevList) => [...prevList, new_post]);
       event.preventDefault();
@@ -95,7 +98,7 @@ function App() {
           <div style={{ overflowY: 'auto', maxHeight: '80vh', width: '100%' }}>
           <Box sx={{ flex: 1, pr: 2 }}>
           <Paper sx={{ p: 2 }} elevation={3}>
-          Post new question: 
+          Post new {selectedCategory.toLowerCase()}: 
           <TextareaAutosize
                     minRows={3}
                     maxRows={10}
