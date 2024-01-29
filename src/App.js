@@ -24,7 +24,8 @@ function App() {
         comments: posts.filter(comment => comment.parent_id === post.id)
       };
     }
-  ).filter(post => post != null); // Remove null entries (which are comments)
+  ).filter(post => post != null)
+  .reverse();
 
   console.log(postsWithComments);
 
@@ -87,9 +88,11 @@ function App() {
       </Box>
 
       <Container maxWidth="lg">
-        <Box sx={{  mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mt: 2 }}>
+        {/* <Box sx={{  mt: 2 }}> */}
           {/* Main content area */}
 
+          <div style={{ overflowY: 'auto', maxHeight: '80vh', width: '100%' }}>
           <Box sx={{ flex: 1, pr: 2 }}>
           <Paper sx={{ p: 2 }} elevation={3}>
           Post new question: 
@@ -106,6 +109,7 @@ function App() {
                   />
                   </Paper>
           </Box>
+
           {postsWithComments.map((post) => (
 
             <Box sx={{ flex: 1, pr: 2 }}>
@@ -147,6 +151,7 @@ function App() {
               </Paper>
             </Box>
           ))}
+          </div>
 
           {/* Unit Selections */}
           <Box sx={{ width: '200px' }}>
