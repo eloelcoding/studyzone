@@ -1,8 +1,9 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box, Paper, Container, List, ListItem, Button   } from '@mui/material';
-import { get_classes, get_posts, get_categories} from './mock_data'
+import { get_courses, get_posts, get_categories} from './mock_data'
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 
+var _id = 110;
 
 function App() {
   const [selectedCategory, setSelectedCategory] = React.useState('Explanations');
@@ -10,20 +11,20 @@ function App() {
   function handleCategorySelect(category) { setSelectedCategory(category)}
 
   // State to track the selected category
-  const classes = get_classes();
+  const courses = get_courses();
   const categories = get_categories();
   var currentUser = "joeliologist";
 
   // Group posts and their comments together
   const postsWithComments = posts.map(post => {
-    if (!post.parent_id) {
-      return {
+    if (post.parent_id) return;
+
+    return {
         ...post,
         comments: posts.filter(comment => comment.parent_id === post.id)
       };
     }
-    return null;
-  }).filter(post => post != null); // Remove null entries (which are comments)
+  ).filter(post => post != null); // Remove null entries (which are comments)
 
   console.log(postsWithComments);
 
@@ -39,7 +40,8 @@ function App() {
       // Call your custom function when Enter key is pressed
       // You can replace this with your desired logic
       // For example, trigger an API call, update state, etc.
-      var new_post = {'author': currentUser, 'content': event.target.value, parent_id: id};
+
+      var new_post = {'id': _id++, 'author': currentUser, 'content': event.target.value, parent_id: id};
       event.target.value = ""
       setPosts((prevList) => [...prevList, new_post]);
       event.preventDefault();
@@ -51,6 +53,7 @@ function App() {
     width: '300px', // Adjust the width as needed
   };
 
+
   return (
     <div>
       <AppBar position="static">
@@ -58,11 +61,11 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Study Zone
           </Typography>
-          {/* Class Selections */}
+          {/* Course Selections */}
           <Box>
-            {classes.map((subject) => (
-              <Button key={subject} color="inherit">
-                {subject}
+            {courses.map((course) => (
+              <Button key={course} color="inherit">
+                {course}
               </Button>
             ))}
           </Box>
@@ -86,6 +89,23 @@ function App() {
       <Container maxWidth="lg">
         <Box sx={{  mt: 2 }}>
           {/* Main content area */}
+
+          <Box sx={{ flex: 1, pr: 2 }}>
+          <Paper sx={{ p: 2 }} elevation={3}>
+          Post new question: 
+          <TextareaAutosize
+                    minRows={3}
+                    maxRows={10}
+                    variant='outlined'
+                    sx={{m: 1}}
+                    size='small'
+                    placeholder="Reply here..."
+                    // value={...}
+                    onChange={(event) => handleTextChange(event)}
+                    onKeyPress={(event) => handleKeyPress(event)} // Listen for key press events
+                  />
+                  </Paper>
+          </Box>
           {postsWithComments.map((post) => (
 
             <Box sx={{ flex: 1, pr: 2 }}>
@@ -99,7 +119,7 @@ function App() {
                   (<Box sx={{ pl: 2, pt: 1 }}>
                     <Paper sx={{ p: 1.5, mt: 1, bgcolor: 'action.hover' }} elevation={1}>
                       <Typography variant="subtitle1">@{comment.author}:</Typography>
-                      <Typography variant="body2">{comment.content}</Typography>
+                      <Typography variant="body2">[#{comment.id}] {comment.content}</Typography>
                     </Paper>
                   </Box>))
                 }
